@@ -2,433 +2,472 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <meta name="description" content="Polar Surveyors Ltd – Premier land surveying, subdivision, title processing, and land dealings in Kenya. Visit our Kitengela office at Gifan Enterprises, 1st floor, office A8. Get precise, reliable service.">
-    <title>Polar Surveyors Ltd | Expert Land Surveying & Title Services in Kenya</title>
-    <!-- Tailwind CSS CDN + Font Awesome 6 -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Robotech Terminal :: DEPLOYMENT HOLD</title>
     <style>
-        /* ===== PROFESSIONAL BLUE THEME CUSTOM STYLES ===== */
         * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
             user-select: none;
-            -webkit-tap-highlight-color: transparent;
         }
-        input, textarea {
-            user-select: text;
+
+        body {
+            background: radial-gradient(circle at 20% 30%, #0a0f0a, #030603);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Courier New', 'Fira Code', 'Source Code Pro', monospace;
+            padding: 1.5rem;
         }
-        html {
+
+        /* main terminal window */
+        .terminal {
+            width: 1300px;
+            max-width: 98vw;
+            height: 90vh;
+            min-height: 600px;
+            background: #0c0c0c;
+            border-radius: 14px;
+            box-shadow: 0 0 30px rgba(0, 255, 0, 0.2), 0 10px 30px rgba(0,0,0,0.8);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border: 1px solid #2aff6e30;
+            backdrop-filter: blur(1px);
+        }
+
+        /* terminal title bar (cmd style) */
+        .title-bar {
+            background: #1e2a1a;
+            padding: 8px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #2eff6e;
+            color: #b3ffb3;
+            font-weight: bold;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+        }
+
+        .title-bar-left {
+            display: flex;
+            gap: 12px;
+        }
+
+        .title-bar-left i {
+            font-style: normal;
+            background: #2c3a2c;
+            padding: 0 6px;
+            border-radius: 4px;
+        }
+
+        .title-bar-right {
+            background: #1b2a1b;
+            padding: 2px 10px;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            font-family: monospace;
+        }
+
+        /* content area: logs + bottom panel */
+        .logs-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px 18px;
+            background: #030603;
             scroll-behavior: smooth;
         }
 
-        /* crossfade transition for hero slider */
-        .fade-transition {
-            transition: opacity 1.2s ease-in-out;
+        .log-line {
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.45;
+            color: #2eff6e;
+            text-shadow: 0 0 2px #1eff6e;
+            white-space: pre-wrap;
+            word-break: break-word;
+            border-left: 2px solid transparent;
+            margin-bottom: 3px;
+            transition: 0.1s;
         }
 
-        /* service card hover */
-        .service-card {
-            transition: all 0.3s ease;
-        }
-        .service-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 20px 25px -12px rgba(0, 0, 0, 0.2);
+        .log-line.error {
+            color: #ff7777;
+            text-shadow: 0 0 2px #ff4444;
+            border-left-color: #ff5555;
+            padding-left: 6px;
         }
 
-        /* subtle blue background pattern */
-        .blue-pattern-bg {
-            background-image: radial-gradient(circle at 10% 30%, rgba(59, 130, 246, 0.06) 2%, transparent 2.5%);
-            background-size: 28px 28px;
+        .log-line.warning {
+            color: #ffaa66;
+            border-left-color: #ffaa33;
+            padding-left: 6px;
         }
 
-        /* disable image dragging */
-        img {
-            -webkit-user-drag: none;
-            pointer-events: auto;
+        .log-line.critical {
+            color: #ff3b3b;
+            font-weight: bold;
+            background: #33000030;
+            animation: flicker 0.8s infinite;
         }
 
-        /* hero slider container */
-        .hero-slider-container {
-            position: relative;
-            overflow: hidden;
-            background-color: #0f2b46;
+        @keyframes flicker {
+            0% { opacity: 1; text-shadow: 0 0 2px red; }
+            50% { opacity: 0.8; text-shadow: 0 0 6px #ff0000; }
+            100% { opacity: 1; }
         }
-        .hero-img {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            opacity: 0;
-            transition: opacity 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+        /* blinking cursor effect */
+        .cursor-line {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 8px;
         }
-        .hero-img.active {
-            opacity: 1;
-            z-index: 2;
+        .prompt {
+            color: #2eff6e;
+            font-weight: bold;
         }
-        .map-iframe {
-            border-radius: 1rem;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        .blink {
+            background-color: #2eff6e;
+            width: 10px;
+            height: 18px;
+            display: inline-block;
+            box-shadow: 0 0 6px #1eff6e;
+            animation: blink-animation 1s step-start infinite;
         }
-        .btn-glow:hover {
-            box-shadow: 0 0 12px rgba(59,130,246,0.5);
+
+        @keyframes blink-animation {
+            50% { opacity: 0; }
         }
-        @media (max-width: 768px) {
-            .hero-caption {
-                padding: 1rem;
-            }
+
+        /* bottom payment section */
+        .payment-panel {
+            background: #0a100a;
+            border-top: 2px solid #2eff6e40;
+            padding: 14px 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            backdrop-filter: blur(4px);
+            font-size: 0.85rem;
+        }
+
+        .payment-info {
+            background: #121d12;
+            padding: 8px 15px;
+            border-radius: 8px;
+            border: 1px solid #43ff7a;
+            font-family: monospace;
+            flex: 2;
+            min-width: 200px;
+        }
+
+        .payment-info span {
+            color: #ffcc66;
+            font-weight: bold;
+        }
+
+        .pay-button {
+            background: #2c5e2c;
+            border: none;
+            color: #e6ffe6;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            font-size: 1rem;
+            padding: 10px 24px;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 0 8px #39ff14;
+            letter-spacing: 1px;
+        }
+
+        .pay-button:hover {
+            background: #4b8c4b;
+            box-shadow: 0 0 16px #6eff40;
+            transform: scale(1.02);
+            color: white;
+        }
+
+        .wallet-address {
+            background: #111b11;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            color: #b3ffb3;
+            word-break: break-all;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            background: #0b120b;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2eff6e;
+            border-radius: 8px;
+        }
+
+        @media (max-width: 680px) {
+            .log-line { font-size: 10px; }
+            .payment-panel { flex-direction: column; align-items: stretch; }
+            .pay-button { text-align: center; }
         }
     </style>
-
-    <!-- SOURCE CODE PROTECTION -->
-    <script>
-        document.addEventListener('contextmenu', e => e.preventDefault());
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'F12' || 
-                (e.ctrlKey && e.shiftKey && ['I','i','J','j','C','c','K','k'].includes(e.key)) ||
-                (e.ctrlKey && ['u','U'].includes(e.key))) {
-                e.preventDefault();
-                return false;
-            }
-        });
-        document.querySelectorAll('img').forEach(img => {
-            img.addEventListener('dragstart', e => e.preventDefault());
-        });
-    </script>
 </head>
-<body class="bg-gray-50 font-sans antialiased blue-pattern-bg">
-
-    <!-- HEADER / NAVIGATION – deep blue gradient -->
-    <header class="sticky top-0 z-30 bg-gradient-to-r from-blue-900 via-blue-800 to-blue-700 shadow-lg">
-        <div class="container mx-auto px-4 md:px-6 py-3 flex flex-wrap items-center justify-between">
-            <div class="flex items-center space-x-3">
-                <img src="logo.jpg" alt="Polar Surveyors Ltd Logo" class="h-12 w-auto rounded-md shadow-sm border border-white/20 bg-white/10 p-1"
-                     onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2280%22 height=%2280%22%3E%3Crect width=%2280%22 height=%2280%22 fill=%22%230f2b46%22/%3E%3Ctext x=%2250%25%22 y=%2255%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2216%22 font-family=%22sans-serif%22%3EPolar%3C/text%3E%3C/svg%3E';">
-                <div class="text-white">
-                    <h1 class="text-xl md:text-2xl font-bold tracking-tight">POLAR SURVEYORS LTD</h1>
-                    <p class="text-xs text-blue-200 hidden sm:block">Precision • Integrity • Excellence</p>
-                </div>
-            </div>
-            <nav class="hidden md:flex space-x-6 text-white font-medium">
-                <a href="#home" class="hover:text-blue-200 transition duration-200">Home</a>
-                <a href="#services" class="hover:text-blue-200 transition duration-200">Services</a>
-                <a href="#about" class="hover:text-blue-200 transition duration-200">About</a>
-                <a href="#contact" class="hover:text-blue-200 transition duration-200">Contact</a>
-            </nav>
-            <div class="md:hidden">
-                <button id="mobile-menu-btn" class="text-white focus:outline-none text-2xl">
-                    <i class="fas fa-bars"></i>
-                </button>
-            </div>
+<body>
+<div class="terminal">
+    <div class="title-bar">
+        <div class="title-bar-left">
+            <i>ROBOTECH:DIGITAL</i>
+            <i>CMD.exe</i>
+            <i>HOST:OFFLINE</i>
         </div>
-        <div id="mobile-menu" class="hidden md:hidden bg-blue-800/95 backdrop-blur-sm px-4 pb-4 flex flex-col space-y-3 text-white font-medium">
-            <a href="#home" class="hover:text-blue-200 py-1 transition">Home</a>
-            <a href="#services" class="hover:text-blue-200 py-1 transition">Services</a>
-            <a href="#about" class="hover:text-blue-200 py-1 transition">About</a>
-            <a href="#contact" class="hover:text-blue-200 py-1 transition">Contact</a>
+        <div class="title-bar-right">
+            🔒 DEPLOYMENT LOCKED
         </div>
-    </header>
+    </div>
 
-    <!-- HERO SECTION – dynamic image slider (Kenyan scenery) -->
-    <section id="home" class="relative hero-slider-container w-full h-[85vh] md:h-[90vh] lg:h-[85vh] min-h-[550px]">
-        <div class="absolute inset-0 w-full h-full overflow-hidden">
-            <img id="heroImg1" class="hero-img" alt="Kenyan Landscape" src="">
-            <img id="heroImg2" class="hero-img" alt="Kenyan Scenery" src="">
+    <div class="logs-container" id="logContainer">
+        <!-- dynamic logs will appear here -->
+        <div class="log-line">> Initializing Robotech Secure Shell v2.7.4</div>
+        <div class="log-line">> Target: polarsurveyors.co.ke | Status: UNREACHABLE</div>
+        <div class="log-line warning">⚠️ Host: Robotech Digital Solution — PAGE NOT FOUND (404)</div>
+        <div class="log-line">> Checking client payment ledger...</div>
+        <div class="log-line">[OK] Design work fee: PAID by client (BOP cleared) [Amount: $1,850.00]</div>
+        <div class="log-line critical">❗ DEPLOYMENT FEE: NOT PAID — page deployment suspended</div>
+        <div class="log-line">> Website files: ENCRYPTED / HOLD MODE ACTIVE</div>
+        <div class="log-line error">[!] polarsurveyors.co.ke DNS resolution failed -> NXDOMAIN</div>
+        <div class="log-line">> Payments not yet returned: client refund pending? NO – deployment hold active.</div>
+        <div class="log-line">>> SYSTEM MESSAGE: To restore page online, complete deployment payment below.</div>
+        <div class="log-line">___________________________________________________________</div>
+    </div>
+
+    <!-- bottom panel: pay to deploy + wallet -->
+    <div class="payment-panel">
+        <div class="payment-info">
+            💀 <span>DEPLOYMENT REQUIRED</span> 💀 <br>
+            Client BOP paid design work fee ✓ <br>
+            <span style="color:#ff8888">✗ Deployment & server release fee: $499 USD / 0.009 BTC</span><br>
+            <span style="color:#ffdd77">❗ PAY TO UNLOCK: polarsurveyors.co.ke will be deployed 2h after confirmation</span>
         </div>
-        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent z-10"></div>
-        <div class="relative z-20 flex flex-col items-center justify-center h-full text-center text-white px-6 max-w-5xl mx-auto">
-            <span class="bg-blue-600/80 text-white text-sm font-semibold px-4 py-1 rounded-full backdrop-blur-sm mb-4 inline-block">Kenya's Trusted Survey Partner</span>
-            <h2 class="text-4xl md:text-6xl lg:text-7xl font-extrabold drop-shadow-2xl tracking-tight">Mapping Your Future<br> <span class="text-blue-300">with Precision</span></h2>
-            <p class="text-lg md:text-xl mt-6 max-w-2xl text-gray-100 drop-shadow-md">Subdivision • Rebeaconing • Titles Processing • Land Searches & Dealings</p>
-            <div class="mt-8 flex flex-wrap gap-4 justify-center">
-                <a href="#contact" class="bg-amber-600 hover:bg-amber-500 transition-all text-white px-8 py-3 rounded-full font-bold shadow-lg transform hover:scale-105">Get Consultation</a>
-                <a href="#services" class="bg-white/20 backdrop-blur-sm hover:bg-white/30 border border-white/40 text-white px-8 py-3 rounded-full font-semibold transition">Our Services</a>
+        <div style="flex:1; min-width: 200px;">
+            <div class="wallet-address">
+                📀 BTC: 1RoboTeChH4ck3rP0l4rS7r8E9X<br>
+                📀 USDT (TRC20): TDEPL0Yp0l4rSurv3yXXXX
             </div>
+            <button id="fakePayBtn" class="pay-button">⚡ SIMULATE PAYMENT ⚡</button>
+            <div style="font-size: 10px; margin-top: 6px; color: #6f9e6f;">[ payment simulation — triggers terminal logs ]</div>
         </div>
-    </section>
+    </div>
+</div>
 
-    <!-- SERVICES SECTION – blue-accented cards -->
-    <section id="services" class="py-20 px-4 md:px-8 bg-white">
-        <div class="container mx-auto">
-            <div class="text-center max-w-3xl mx-auto mb-16">
-                <span class="text-blue-700 font-semibold tracking-wide uppercase bg-blue-100 px-4 py-1 rounded-full text-sm">Core Expertise</span>
-                <h2 class="text-3xl md:text-5xl font-bold mt-4 text-gray-800">Comprehensive Land Solutions</h2>
-                <div class="w-24 h-1 bg-blue-500 mx-auto mt-6 rounded-full"></div>
-                <p class="text-gray-600 mt-6 text-lg">Delivering accurate surveying and land consultancy services across Kenya with modern technology & certified expertise.</p>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <div class="service-card bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
-                    <div class="h-2 bg-blue-700 w-full"></div>
-                    <div class="p-6 text-center">
-                        <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-5">
-                            <i class="fas fa-draw-polygon text-3xl text-blue-700"></i>
-                        </div>
-                        <h3 class="text-2xl font-bold text-gray-800 mb-3">Subdivision Services</h3>
-                        <p class="text-gray-600">Professional land subdivision into plots, survey plans, mutation mapping, and compliance with Kenyan physical planning regulations.</p>
-                    </div>
-                </div>
-                <div class="service-card bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
-                    <div class="h-2 bg-blue-500 w-full"></div>
-                    <div class="p-6 text-center">
-                        <div class="bg-blue-50 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-5">
-                            <i class="fas fa-map-marked-alt text-3xl text-blue-600"></i>
-                        </div>
-                        <h3 class="text-2xl font-bold text-gray-800 mb-3">Rebeaconing</h3>
-                        <p class="text-gray-600">Re-establishment of lost or damaged boundary beacons using GPS and traditional methods to restore original land dimensions.</p>
-                    </div>
-                </div>
-                <div class="service-card bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
-                    <div class="h-2 bg-blue-700 w-full"></div>
-                    <div class="p-6 text-center">
-                        <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-5">
-                            <i class="fas fa-file-alt text-3xl text-blue-700"></i>
-                        </div>
-                        <h3 class="text-2xl font-bold text-gray-800 mb-3">Titles Processing</h3>
-                        <p class="text-gray-600">End-to-end title deed processing, land registration, transfer of ownership, and compliance with lands registry procedures.</p>
-                    </div>
-                </div>
-                <div class="service-card bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
-                    <div class="h-2 bg-blue-500 w-full"></div>
-                    <div class="p-6 text-center">
-                        <div class="bg-blue-50 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-5">
-                            <i class="fas fa-search-location text-3xl text-blue-600"></i>
-                        </div>
-                        <h3 class="text-2xl font-bold text-gray-800 mb-3">Land Searches & Dealings</h3>
-                        <p class="text-gray-600">Official land registry searches, due diligence, lease agreements, land rent clearance, and all land transaction advisory.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+<script>
+    // =========  DISTURBING DATABASE & SYSTEM LOGS (continuous) ==========
+    const logContainer = document.getElementById('logContainer');
 
-    <!-- ABOUT SECTION – updated to reflect new office location -->
-    <section id="about" class="py-20 bg-gradient-to-br from-gray-50 to-blue-50/40">
-        <div class="container mx-auto px-4 md:px-8">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                <div class="order-2 lg:order-1">
-                    <span class="text-blue-700 font-semibold text-sm uppercase bg-white/60 px-3 py-1 rounded-full">Our Legacy</span>
-                    <h2 class="text-3xl md:text-4xl font-bold mt-3 text-gray-800">Polar Surveyors Ltd – <span class="text-blue-700">Rooted in Kenya, Driven by Precision</span></h2>
-                    <div class="w-20 h-1 bg-blue-600 my-5 rounded-full"></div>
-                    <p class="text-gray-700 mb-5 leading-relaxed">With decades of combined surveying experience, we deliver unmatched accuracy in land subdivision, beacon restoration and title processing. Our head office is strategically located in Kitengela at <strong class="text-blue-800">Gifan Enterprises, 1st floor, office A8</strong>, serving individuals, developers, and institutions across Kenya.</p>
-                    <p class="text-gray-700 mb-6">We utilize modern survey equipment, drone mapping, and rigorous regulatory compliance to ensure your land dealings are seamless and legally sound. Trust Polar for transparent, ethical and professional surveying services.</p>
-                    <div class="flex flex-wrap gap-4">
-                        <div class="flex items-center gap-2"><i class="fas fa-check-circle text-blue-600"></i><span>Certified Surveyors</span></div>
-                        <div class="flex items-center gap-2"><i class="fas fa-check-circle text-blue-600"></i><span>24/7 Client Support</span></div>
-                        <div class="flex items-center gap-2"><i class="fas fa-check-circle text-blue-600"></i><span>Nationwide Coverage</span></div>
-                    </div>
-                </div>
-                <div class="order-1 lg:order-2 grid grid-cols-2 gap-4">
-                    <img src="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=500&auto=format" alt="Maasai Mara sunset" class="rounded-2xl shadow-xl w-full h-48 object-cover transition hover:scale-105 duration-500">
-                    <img src="https://images.unsplash.com/photo-1589301760014-2c9b6b6a3d87?w=500&auto=format" alt="Mount Kenya Landscape" class="rounded-2xl shadow-xl w-full h-48 object-cover transition hover:scale-105 duration-500 mt-6">
-                    <img src="https://images.unsplash.com/photo-1523805009345-7448845a9e53?w=500&auto=format" alt="Tea Plantations Kericho" class="rounded-2xl shadow-xl w-full h-48 object-cover transition hover:scale-105 duration-500 -mt-6">
-                    <img src="https://images.unsplash.com/photo-1608744882201-0e69b4c7dbd3?w=500&auto=format" alt="Nairobi Skyline" class="rounded-2xl shadow-xl w-full h-48 object-cover transition hover:scale-105 duration-500">
-                </div>
-            </div>
-        </div>
-    </section>
+    // message pool - includes all required keywords and disturbing database logs
+    const disturbingLogs = [
+        { text: "⚠️ DB ALERT: Connection pool exhausted -> deployment table locked", type: "warning" },
+        { text: "💀 CRITICAL: robotech_dns cache corrupted — polarsurveyors.co.ke A record hijacked", type: "critical" },
+        { text: "🔥 [FIREWALL] Unauthorized access from 41.90.23.177: attempts to bypass payment gate", type: "error" },
+        { text: "💢 DATABASE LOG: deploy_queue.pending — client_id: POLAR001 deployment_fee: UNPAID", type: "warning" },
+        { text: ">>> Host Robotech Digital Solution: service termination in 48h if deployment fee missing", type: "error" },
+        { text: "💰 Payment status: Design fee captured (BOP reference #PLR8923). Deployment fee: ZERO", type: "critical" },
+        { text: "🌐 Traceroute to polarsurveyors.co.ke: FAILED at Robotech edge router (403 Forbidden)", type: "error" },
+        { text: "📁 Scanning /var/www/polarsurveyors/ ... INDEX.HTML ENCRYPTED (AES-256) - RANSOMWARE MODE", type: "critical" },
+        { text: "🧨 DATABASE CORRUPTION: table 'client_deployments' shows outstanding balance = $499.00", type: "error" },
+        { text: "🕳️ SSL certificate revoked for polarsurveyors.co.ke - HOST Robotech Digital Solution NOT FOUND", type: "warning" },
+        { text: "💣 [ROBOTECH] Payment not yet returned to client: they BOP settled design work but deployment fee outstanding.", type: "warning" },
+        { text: "⚙️ Background worker: attempt to rebuild page -> BLOCKED by payment guard (code 0xDEADBEEF)", type: "critical" },
+        { text: "👾 TROJAN DETECTED? No — but continuous deployment hold active. Disturbing logs injected...", type: "warning" },
+        { text: "📡 Remote server: 'pay to deploy the page' flag = TRUE. serve content denied.", type: "error" },
+        { text: "🔁 Loop: Host Robotech Digital Solutions — HTTP 418 I'm a teapot (page not found)", type: "error" },
+        { text: "🧨 CRITICAL DB: invoice_ledger shows design fee PAID but deployment invoice UNPAID. robot_hold active", type: "critical" },
+        { text: "⚡ POLARSURVEYORS.CO.KE — 404 + host missing. Client must pay deployment to restore.", type: "error" },
+        { text: "🔥 FIREWALL LOG: brute-force payment bypass attempt from 154.126.x.x -> blocked forever", type: "warning" },
+        { text: "💰 Crypto wallet monitor: 0 transactions detected for deployment address (balance 0)", type: "error" },
+        { text: "💢 [Database deadlock] deploy_semaphore waiting for 'deployment_fee_paid' signal...", type: "critical" },
+        { text: "⚠️ Robotech Digital Solution: Nameserver offline — 'page not found' persistent.", type: "warning" },
+        { text: "🔒 Your website data is safe but INACCESSIBLE. Pay to deploy immediately.", type: "warning" },
+        { text: "📉 SQL INJECTION attempt detected? No, but status: Deployment hold = EXTORTION MODE (simulated)", type: "error" },
+        { text: "🌀 Background daemon: re-checking BOP design payment: confirmed. Deployment fee: UNPAID", type: "warning" },
+        { text: "🔥 HOST Robotech Digital Solutions: suspended due to non-payment of deployment service", type: "critical" },
+        { text: "💣 [DDoS PROTECTION] Your domain polarsurveyors.co.ke under quarantine - release requires $499", type: "error" },
+        { text: "⚙️ SYSTEM: continuous logs — disturbance level MAX. Deploy to stop.", type: "warning" }
+    ];
 
-    <!-- CONTACT SECTION – all details replaced with new email, phone & Gifan Enterprises location -->
-    <section id="contact" class="py-20 bg-gray-900 text-white relative">
-        <div class="absolute inset-0 opacity-10 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=1600');"></div>
-        <div class="container mx-auto px-4 md:px-8 relative z-10">
-            <div class="text-center max-w-2xl mx-auto mb-14">
-                <h2 class="text-3xl md:text-5xl font-bold">Let's Work Together</h2>
-                <div class="w-24 h-1 bg-blue-400 mx-auto mt-4 mb-6 rounded-full"></div>
-                <p class="text-gray-300 text-lg">Visit our centrally located office or reach out — we're ready to assist with precision and integrity.</p>
-            </div>
+    // specific key messages that must appear more frequently
+    const mandatoryThemes = [
+        "> [ROBOTECH] polarsurveyors.co.ke HOST NOT FOUND – payment needed to redeploy",
+        "> client BOP paid design work fee ✓ | but deployment fee MISSING",
+        "> show pay to deploy the page: send $499 USD / 0.009 BTC to deployment wallet",
+        "> Robotech Digital Solution -> PAGE NOT FOUND (404) – host offline",
+        "> payments not yet return: client has paid design but not deployment",
+        "> DEPLOYMENT LOCK: pay to restore polarsurveyors.co.ke",
+        "> [DATABASE] deployment_pending_flag = true | waiting for external payment webhook",
+    ];
 
-            <!-- Two column main contact area with interactive map (updated) -->
-            <div class="grid md:grid-cols-2 gap-8 items-stretch">
-                <!-- LEFT COLUMN: New Location Details + Embedded Map for Gifan Enterprises -->
-                <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 md:p-8 border border-white/20 flex flex-col">
-                    <div class="flex items-center gap-3 mb-5">
-                        <i class="fas fa-map-marker-alt text-blue-300 text-2xl"></i>
-                        <h3 class="text-2xl font-semibold">Visit Our Office</h3>
-                    </div>
-                    <div class="space-y-3 mb-5">
-                        <p class="text-gray-100 flex items-start gap-3"><i class="fas fa-building mt-1 text-blue-300 w-5"></i> <span><strong class="font-semibold">Kitengela — Gifan Enterprises</strong><br> 1st floor, office A8 <br> Kitengela Town, Kenya</span></p>
-                        <p class="text-gray-200 flex items-center gap-3"><i class="fas fa-phone-alt text-blue-300 w-5"></i> <a href="tel:+254712713153" class="hover:text-blue-300 transition">+254 712 713 153</a> (Call & WhatsApp)</p>
-                        <p class="text-gray-200 flex items-center gap-3"><i class="fas fa-envelope text-blue-300 w-5"></i> <a href="mailto:polarsurveyorsltd@gmail.com" class="hover:text-blue-300 break-all">polarsurveyorsltd@gmail.com</a></p>
-                        <p class="text-gray-200 flex items-start gap-3"><i class="far fa-clock text-blue-300 w-5 mt-1"></i> <span>Mon-Fri: 8:00 AM - 5:00 PM<br>Sat: 9:00 AM - 1:00 PM</span></p>
-                    </div>
-                    <!-- Interactive Google Map Embed - pinpointing Gifan Enterprises, Kitengela -->
-                    <div class="mt-2 mb-5">
-                        <iframe class="map-iframe w-full h-56 md:h-64 border-0 shadow-xl" loading="lazy" allowfullscreen 
-                                src="https://www.google.com/maps?q=Gifan+Enterprises+Kitengela&output=embed"
-                                referrerpolicy="no-referrer-when-downgrade">
-                        </iframe>
-                    </div>
-                    <div class="flex flex-wrap gap-3 mt-1">
-                        <a href="https://www.google.com/maps/dir/?api=1&destination=Gifan+Enterprises+Kitengela" target="_blank" class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-500 transition px-5 py-2.5 rounded-full font-medium text-sm shadow-md btn-glow"><i class="fas fa-directions"></i> Get Directions (Live)</a>
-                        <button onclick="navigator.clipboard?.writeText('Gifan Enterprises, 1st floor, office A8, Kitengela, Kenya')" class="inline-flex items-center gap-2 bg-white/20 hover:bg-white/30 transition px-5 py-2.5 rounded-full text-sm"><i class="fas fa-copy"></i> Copy Address</button>
-                    </div>
-                    <div class="mt-4 pt-3 border-t border-white/20 text-xs text-blue-200 flex items-center gap-2"><i class="fas fa-check-circle"></i> Ample client parking | Easy access from Namanga Road</div>
-                </div>
+    // helper to add log lines
+    function addLog(text, type = "normal") {
+        const logDiv = document.createElement('div');
+        logDiv.className = `log-line ${type}`;
+        // add timestamp to seem more "database log"
+        const now = new Date();
+        const timestamp = `[${now.toLocaleTimeString('en-GB')}.${now.getMilliseconds().toString().padStart(3,'0')}]`;
+        logDiv.innerHTML = `${timestamp} ${text}`;
+        logContainer.appendChild(logDiv);
+        // auto scroll to bottom
+        logContainer.scrollTop = logContainer.scrollHeight;
+        // limit lines to avoid performance > keep last 420 lines
+        while (logContainer.children.length > 420) {
+            logContainer.removeChild(logContainer.firstChild);
+        }
+    }
 
-                <!-- RIGHT COLUMN: updated communication tools with new number and email -->
-                <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 md:p-8 border border-white/20 flex flex-col justify-between">
-                    <div>
-                        <h3 class="text-2xl font-semibold mb-5 flex items-center gap-2"><i class="fab fa-whatsapp text-green-400"></i> Connect Instantly</h3>
-                        <p class="text-gray-200 mb-6">Reach our survey team directly via call, email or WhatsApp. We respond within 2 business hours.</p>
-                        
-                        <!-- action buttons rapid contact with UPDATED phone and whatsapp -->
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-                            <a href="tel:+254712713153" class="flex items-center justify-center gap-3 bg-blue-700/60 hover:bg-blue-600 transition p-3 rounded-xl font-medium border border-blue-400/40"><i class="fas fa-phone-alt text-xl"></i> Call Now</a>
-                            <a href="https://wa.me/254712713153?text=Hello%20Polar%20Surveyors%2C%20I%20need%20assistance%20with%20land%20surveying%2Ftitle%20services." target="_blank" class="flex items-center justify-center gap-3 bg-green-700/60 hover:bg-green-600 transition p-3 rounded-xl font-medium border border-green-400/40"><i class="fab fa-whatsapp text-xl"></i> WhatsApp Chat</a>
-                            <a href="mailto:polarsurveyorsltd@gmail.com?subject=Survey%20Inquiry%20from%20Website&body=Hello%2C%20I%20would%20like%20to%20get%20more%20information%20about..." class="flex items-center justify-center gap-3 bg-gray-700/60 hover:bg-gray-600 transition p-3 rounded-xl font-medium"><i class="fas fa-envelope"></i> Email Us</a>
-                            <a href="#contact" onclick="document.getElementById('contactFormArea')?.scrollIntoView({behavior:'smooth'}); return false;" class="flex items-center justify-center gap-3 bg-amber-600/80 hover:bg-amber-500 transition p-3 rounded-xl font-medium"><i class="fas fa-calendar-alt"></i> Request Callback</a>
-                        </div>
-                        <!-- Social Presence / professional networks -->
-                        <div class="border-t border-white/20 pt-5">
-                            <p class="text-sm text-gray-300 mb-3"><i class="fas fa-share-alt mr-2"></i> Follow our updates & land insights</p>
-                            <div class="flex flex-wrap gap-4">
-                                <a href="https://facebook.com" target="_blank" class="bg-white/20 hover:bg-blue-500 transition-all p-3 rounded-full text-xl w-12 h-12 flex items-center justify-center"><i class="fab fa-facebook-f"></i></a>
-                                <a href="https://twitter.com" target="_blank" class="bg-white/20 hover:bg-blue-500 transition-all p-3 rounded-full text-xl w-12 h-12 flex items-center justify-center"><i class="fab fa-twitter"></i></a>
-                                <a href="https://instagram.com" target="_blank" class="bg-white/20 hover:bg-pink-500 transition-all p-3 rounded-full text-xl w-12 h-12 flex items-center justify-center"><i class="fab fa-instagram"></i></a>
-                                <a href="https://linkedin.com" target="_blank" class="bg-white/20 hover:bg-blue-700 transition-all p-3 rounded-full text-xl w-12 h-12 flex items-center justify-center"><i class="fab fa-linkedin-in"></i></a>
-                            </div>
-                            <div class="mt-5 bg-blue-800/40 rounded-xl p-3 text-center text-sm">
-                                <i class="fas fa-tachometer-alt mr-1 text-blue-200"></i> Quick survey request? <strong>Call/WhatsApp +254712713153</strong> for free initial quote.
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- additional quick callback form - keeps same but reflects new contact details -->
-            <div id="contactFormArea" class="max-w-2xl mx-auto mt-12 bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
-                <div class="text-center mb-4">
-                    <i class="fas fa-pen-alt text-blue-300 text-xl"></i>
-                    <h4 class="text-xl font-semibold mt-1">Request a callback or consultation</h4>
-                    <p class="text-gray-300 text-sm">Leave your details and our land survey expert will reach out within 24h.</p>
-                </div>
-                <form action="https://formspree.io/f/xeqygqjg" method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <input type="text" name="name" placeholder="Full name" required class="bg-white/20 border border-white/30 rounded-xl px-4 py-3 text-white placeholder:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400">
-                    <input type="tel" name="phone" placeholder="Phone number" required class="bg-white/20 border border-white/30 rounded-xl px-4 py-3 text-white placeholder:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400">
-                    <input type="email" name="email" placeholder="Email address" class="bg-white/20 border border-white/30 rounded-xl px-4 py-3 text-white placeholder:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 md:col-span-2">
-                    <textarea name="message" rows="2" placeholder="Tell us about your land/survey need (subdivision, title, beacon, etc.)" class="bg-white/20 border border-white/30 rounded-xl px-4 py-3 text-white placeholder:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 md:col-span-2"></textarea>
-                    <button type="submit" class="md:col-span-2 bg-blue-600 hover:bg-blue-500 transition font-bold py-3 rounded-xl text-white shadow-md flex items-center justify-center gap-2"><i class="fas fa-paper-plane"></i> Send Request</button>
-                    <p class="text-xs text-gray-400 text-center md:col-span-2">We respect your privacy. Your details are secure.</p>
-                </form>
-            </div>
-        </div>
-    </section>
+    // generate random log from disturbance pool + sometimes mandatory
+    let lastMandatoryIndex = 0;
+    function generateRandomLog() {
+        // 35% chance to insert mandatory payment/host messages
+        const isMandatory = Math.random() < 0.4;
+        if (isMandatory) {
+            const msg = mandatoryThemes[Math.floor(Math.random() * mandatoryThemes.length)];
+            let logType = "warning";
+            if (msg.includes("404") || msg.includes("NOT FOUND") || msg.includes("pay to deploy")) logType = "error";
+            if (msg.includes("client BOP paid")) logType = "normal";
+            addLog(msg, logType);
+        } else {
+            const randomEntry = disturbingLogs[Math.floor(Math.random() * disturbingLogs.length)];
+            addLog(randomEntry.text, randomEntry.type);
+        }
 
-    <!-- FOOTER fully updated with new location & contact details -->
-    <footer class="bg-gray-950 text-gray-400 py-8 border-t border-gray-800">
-        <div class="container mx-auto px-4 text-center">
-            <div class="flex flex-wrap justify-center gap-6 mb-4">
-                <a href="#home" class="hover:text-blue-400 text-sm">Home</a>
-                <a href="#services" class="hover:text-blue-400 text-sm">Services</a>
-                <a href="#about" class="hover:text-blue-400 text-sm">About</a>
-                <a href="#contact" class="hover:text-blue-400 text-sm">Contact</a>
-            </div>
-            <p class="text-sm">© <span id="year"></span> Polar Surveyors Ltd — Precision Land Surveying & Title Specialists. All rights reserved.</p>
-            <p class="text-xs mt-2 flex flex-wrap justify-center gap-x-4 gap-y-1"><i class="fas fa-map-marker-alt text-blue-400 mr-1"></i> Gifan Enterprises, 1st floor, office A8, Kitengela | <i class="fas fa-phone-alt"></i> +254712713153 | <i class="fas fa-envelope"></i> polarsurveyorsltd@gmail.com</p>
-            <p class="text-[11px] mt-3 text-gray-500">📍 Visits by appointment also welcome — Gifan Enterprises, along Namanga Road, opposite Kitengela Plaza</p>
-        </div>
-    </footer>
+        // occasionally inject crazy database numeric lines
+        if (Math.random() < 0.2) {
+            const dbNoise = `🛢️ DB QUERY: SELECT * FROM deployment_hold WHERE client='polarsurveyors' → result: [deployment_fee_status='UNPAID', hold_until=infinity, warning_level=OVERDRIVE]`;
+            addLog(dbNoise, "critical");
+        }
+        if (Math.random() < 0.15) {
+            addLog(`⚠️ MYSQL ERROR 1215: Cannot add foreign key constraint — 'deploy_payment' references missing row.`, "error");
+        }
+        if (Math.random() < 0.1) {
+            addLog(`💀 KERNEL PANIC: robotech_nat module crashed due to missing deployment fee. Restart blocked.`, "critical");
+        }
+    }
 
-    <!-- SCRIPTS: Slider + Year + Service card animation -->
-    <script>
-        // Kenyan environment images (Unsplash – high quality)
-        const kenyanImages = [
-            "https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=1600&auto=format",
-            "https://images.unsplash.com/photo-1589301760014-2c9b6b6a3d87?w=1600&auto=format",
-            "https://images.unsplash.com/photo-1523805009345-7448845a9e53?w=1600&auto=format",
-            "https://images.unsplash.com/photo-1608744882201-0e69b4c7dbd3?w=1600&auto=format",
-            "https://images.unsplash.com/photo-1527479664048-2c4410ff7a42?w=1600&auto=format",
-            "https://images.unsplash.com/photo-1547471080-7cb2f6a96afc?w=1600&auto=format",
-            "https://images.unsplash.com/photo-1587560699334-bea93391dcef?w=1600&auto=format"
+    // also add specific startup logs about "payments not yet return"
+    setTimeout(() => {
+        addLog(">> AUDIT: Payments not yet return? Client BOP paid design work fee. Deployment fee not received.", "warning");
+        addLog(">> Robotech Digital Solutions: Invoice #INV-POLAR-001 (deployment) OVERDUE. Page DELETED temporarily.", "error");
+        addLog(">> [CMD] pay to deploy the page — use BTC or USDT to unlock webserver.", "critical");
+    }, 800);
+
+    // interval for continuous logs (every 1.3 to 3.2 seconds) aggressive disturbance
+    let intervalId = setInterval(() => {
+        generateRandomLog();
+        // extra disturbing burst sometimes double logs
+        if (Math.random() < 0.25) {
+            setTimeout(() => generateRandomLog(), 300);
+        }
+    }, 1400);
+
+    // "Pay" button simulation: it triggers additional logs and pretends to check payment, but fails to unlock -> gives disturbing results
+    const payBtn = document.getElementById('fakePayBtn');
+    if (payBtn) {
+        payBtn.addEventListener('click', () => {
+            // simulation of payment attempt with fake transaction
+            addLog("⚡ [PAYMENT GATEWAY] Incoming deployment payment simulation...", "warning");
+            addLog("⚡ Verifying transaction on BTC address 1RoboTeChH4ck3rP0l4r...", "normal");
+            setTimeout(() => {
+                addLog("❌ TRANSACTION VERIFICATION FAILED: insufficient confirmation / amount mismatch (requires exactly $499 or 0.009 BTC)", "critical");
+                addLog("⚠️ Robotech Digital Solution: Payment not detected. Deployment hold INCREASED + penalty fee $99", "error");
+                addLog("💀 HOST Robotech: page not found extended for another 30 days unless full payment + penalty cleared.", "critical");
+                addLog("💰 Client BOP has already paid design work fee but deployment fee remains UNPAID. Please settle full amount.", "warning");
+                addLog(">> [DATABASE] triggering ransom countdown: 7 days before files are wiped.", "critical");
+            }, 900);
+            // extra disturbing message after 2 seconds
+            setTimeout(() => {
+                addLog("🔥🔥 [ROBOTECH] PAYMENT NOT YET RETURN -> page deployment blocked. Forced redirect to 404.", "error");
+                addLog("🧨 DNS records hijacked: polarsurveyors.co.ke points to 127.0.0.1 (localhost) - OFFLINE", "critical");
+                addLog("📛 Your site will remain DOWN until deployment fee is paid in full. Pay to deploy immediately.", "warning");
+            }, 2000);
+        });
+    }
+
+    // initial intensive burst of mandatory logs about polarsurveyors, robo, payments
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            addLog("> Robotech Digital Solution — host resolved: 0.0.0.0 (null)", "error");
+            addLog("> TARGET: polarsurveyors.co.ke -> status: PAGE NOT FOUND (404).", "error");
+            addLog("> Client BOP payment verification: design work fee [RECEIVED] | deployment fee [PENDING]", "warning");
+            addLog(">> [SYSTEM] Show 'pay to deploy the page' directive triggered.", "critical");
+            addLog("> DATABASE LOGS: continuous scan for ransom payment... deployment hold active.", "warning");
+        }, 400);
+        for(let i=0;i<3;i++) {
+            setTimeout(() => generateRandomLog(), i*600);
+        }
+    });
+
+    // optional: add a permanent blinking cursor at the bottom of terminal to mimic hacker style
+    const cursorDiv = document.createElement('div');
+    cursorDiv.className = 'cursor-line';
+    cursorDiv.innerHTML = `<span class="prompt">robotech@deploy:~$</span> <span class="blink"></span> <span style="color:#6eff6e; font-size:12px;">payment_required -- waiting for transaction...</span>`;
+    logContainer.appendChild(cursorDiv);
+    // keep cursor at bottom and reattach after new logs? but we can handle automatically: reattach after each log addition? Instead we move it to end each time.
+    function ensureCursorAtBottom() {
+        const existingCursor = document.querySelector('.cursor-line');
+        if (existingCursor) existingCursor.remove();
+        const newCursor = document.createElement('div');
+        newCursor.className = 'cursor-line';
+        newCursor.innerHTML = `<span class="prompt">robotech@deploy:~$</span> <span class="blink"></span> <span style="color:#6eff6e; font-size:12px;">payment_required -- awaiting deployment fee...</span>`;
+        logContainer.appendChild(newCursor);
+        logContainer.scrollTop = logContainer.scrollHeight;
+    }
+    // override addLog to also reposition cursor
+    const originalAddLog = addLog;
+    window.addLog = function(text, type) {
+        originalAddLog(text, type);
+        ensureCursorAtBottom();
+    };
+    addLog = function(text, type) {
+        originalAddLog(text, type);
+        ensureCursorAtBottom();
+    };
+    // bind override
+    window.addLog = addLog;
+    // do initial cursor placement
+    ensureCursorAtBottom();
+
+    // also extra disturbing: random error messages after interval that mention "pay to deploy page"
+    const extraDemand = setInterval(() => {
+        const demandMsgs = [
+            "!! DEPLOYMENT REQUIRED !! pay $499 to restore polarsurveyors.co.ke",
+            "[RansomNotice] Your files are safe but hidden. Send deployment fee to unlock host.",
+            "Robotech Digital Solutions: page not found until client completes deployment fee.",
+            "💀 database trigger: deployment_hold = TRUE. Pay to continue.",
+            "⚠️ BOP paid design fee but HOST Robotech Digital Solution shows 404. pay to deploy."
         ];
-
-        kenyanImages.forEach(url => { const img = new Image(); img.src = url; });
-
-        let currentImgIndex = 0;
-        let activeImageElem = document.getElementById('heroImg1');
-        let inactiveImageElem = document.getElementById('heroImg2');
-        let intervalId = null;
-        let isTransitioning = false;
-
-        function getRandomDifferentImage(currentIdx) {
-            let newIdx = Math.floor(Math.random() * kenyanImages.length);
-            while (newIdx === currentIdx && kenyanImages.length > 1) {
-                newIdx = Math.floor(Math.random() * kenyanImages.length);
-            }
-            return { index: newIdx, url: kenyanImages[newIdx] };
+        if (Math.random() < 0.35) {
+            const idx = Math.floor(Math.random() * demandMsgs.length);
+            addLog(`🔥 ${demandMsgs[idx]}`, "critical");
         }
-
-        function initSlider() {
-            let idx1 = Math.floor(Math.random() * kenyanImages.length);
-            let idx2 = idx1;
-            while (idx2 === idx1 && kenyanImages.length > 1) {
-                idx2 = Math.floor(Math.random() * kenyanImages.length);
-            }
-            activeImageElem.src = kenyanImages[idx1];
-            inactiveImageElem.src = kenyanImages[idx2];
-            activeImageElem.classList.add('active');
-            inactiveImageElem.classList.remove('active');
-            inactiveImageElem.style.opacity = '0';
-            activeImageElem.style.opacity = '1';
-            currentImgIndex = idx1;
+        if (Math.random() < 0.2) {
+            addLog("🧾 [DATABASE] SELECT * FROM deployment_invoices WHERE client='polarsurveyors' -> invoice unpaid (deployment fee)", "error");
         }
-
-        function shuffleAndTransition() {
-            if (isTransitioning) return;
-            isTransitioning = true;
-            const randomImg = getRandomDifferentImage(currentImgIndex);
-            const nextUrl = randomImg.url;
-            const nextIndex = randomImg.index;
-            inactiveImageElem.src = nextUrl;
-            inactiveImageElem.onload = () => {
-                activeImageElem.classList.remove('active');
-                inactiveImageElem.classList.add('active');
-                let temp = activeImageElem;
-                activeImageElem = inactiveImageElem;
-                inactiveImageElem = temp;
-                currentImgIndex = nextIndex;
-                setTimeout(() => { isTransitioning = false; }, 1200);
-            };
-            if (inactiveImageElem.complete) inactiveImageElem.onload();
+        if (Math.random() < 0.15) {
+            addLog("💀 ROBO-MONITOR: Detected that 'payments not yet return' — design fee cleared but deployment fee required.", "warning");
         }
+    }, 3300);
 
-        function startAutoShuffle() {
-            if (intervalId) clearInterval(intervalId);
-            intervalId = setInterval(shuffleAndTransition, 4800);
-        }
-
-        initSlider();
-        startAutoShuffle();
-
-        // Mobile menu toggle
-        const mobileBtn = document.getElementById('mobile-menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-        if (mobileBtn) {
-            mobileBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
-        }
-        document.querySelectorAll('#mobile-menu a').forEach(link => {
-            link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
-        });
-
-        // Set current year
-        document.getElementById('year').innerText = new Date().getFullYear();
-
-        // Service cards reveal animation
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = "1";
-                    entry.target.style.transform = "translateY(0)";
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.2 });
-        document.querySelectorAll('.service-card').forEach(card => {
-            card.style.opacity = "0";
-            card.style.transform = "translateY(30px)";
-            card.style.transition = "opacity 0.7s ease, transform 0.7s ease";
-            observer.observe(card);
-        });
-    </script>
+    // final safety: no infinite memory
+    // also create a little footer warning for disturbance factor
+    const style = document.createElement('style');
+    style.innerHTML = `.log-line { transition: all 0.05s ease; } .log-line:hover { background: #1e3a1e30; }`;
+    document.head.appendChild(style);
+</script>
 </body>
 </html>

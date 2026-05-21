@@ -1,180 +1,434 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>404 Gaming Console</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta name="description" content="Polar Surveyors Ltd – Premier land surveying, subdivision, title processing, and land dealings in Kenya. Visit our Kitengela office at Gifan Enterprises, 1st floor, office A8. Get precise, reliable service.">
+    <title>Polar Surveyors Ltd | Expert Land Surveying & Title Services in Kenya</title>
+    <!-- Tailwind CSS CDN + Font Awesome 6 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ===== PROFESSIONAL BLUE THEME CUSTOM STYLES ===== */
+        * {
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        input, textarea {
+            user-select: text;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
 
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
+        /* crossfade transition for hero slider */
+        .fade-transition {
+            transition: opacity 1.2s ease-in-out;
+        }
 
-  <!-- Retro Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+        /* service card hover */
+        .service-card {
+            transition: all 0.3s ease;
+        }
+        .service-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 25px -12px rgba(0, 0, 0, 0.2);
+        }
 
-  <style>
-    body{
-      font-family: 'Press Start 2P', cursive;
-      background: radial-gradient(circle at top, #111827, #020617);
-    }
+        /* subtle blue background pattern */
+        .blue-pattern-bg {
+            background-image: radial-gradient(circle at 10% 30%, rgba(59, 130, 246, 0.06) 2%, transparent 2.5%);
+            background-size: 28px 28px;
+        }
 
-    .glow{
-      text-shadow:
-      0 0 5px #00ffff,
-      0 0 10px #00ffff,
-      0 0 20px #00ffff;
-    }
+        /* disable image dragging */
+        img {
+            -webkit-user-drag: none;
+            pointer-events: auto;
+        }
 
-    .neon-border{
-      box-shadow:
-      0 0 10px #00ffff,
-      0 0 20px #8b5cf6,
-      inset 0 0 10px #00ffff;
-    }
+        /* hero slider container */
+        .hero-slider-container {
+            position: relative;
+            overflow: hidden;
+            background-color: #0f2b46;
+        }
+        .hero-img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .hero-img.active {
+            opacity: 1;
+            z-index: 2;
+        }
+        .map-iframe {
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        .btn-glow:hover {
+            box-shadow: 0 0 12px rgba(59,130,246,0.5);
+        }
+        @media (max-width: 768px) {
+            .hero-caption {
+                padding: 1rem;
+            }
+        }
+    </style>
 
-    .btn-glow:hover{
-      box-shadow:
-      0 0 10px #22d3ee,
-      0 0 25px #8b5cf6;
-      transform: scale(1.03);
-    }
-  </style>
+    <!-- SOURCE CODE PROTECTION -->
+    <script>
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'F12' || 
+                (e.ctrlKey && e.shiftKey && ['I','i','J','j','C','c','K','k'].includes(e.key)) ||
+                (e.ctrlKey && ['u','U'].includes(e.key))) {
+                e.preventDefault();
+                return false;
+            }
+        });
+        document.querySelectorAll('img').forEach(img => {
+            img.addEventListener('dragstart', e => e.preventDefault());
+        });
+    </script>
 </head>
+<body class="bg-gray-50 font-sans antialiased blue-pattern-bg">
 
-<body class="min-h-screen flex items-center justify-center p-6 text-white">
-
-  <!-- Console Body -->
-  <div class="relative max-w-6xl w-full bg-black rounded-[40px] border-4 border-slate-800 neon-border p-6 md:p-10">
-
-    <!-- Top Bar -->
-    <div class="flex justify-between items-center mb-8">
-      <div class="flex items-center gap-3">
-        <div class="w-4 h-4 bg-green-400 rounded-full animate-pulse"></div>
-        <span class="text-green-400 text-xs">POWER</span>
-      </div>
-
-      <h1 class="text-pink-500 text-xl md:text-2xl glow">
-        ROBOTECH
-      </h1>
-
-      <div class="text-green-400 text-xs">
-        100%
-      </div>
-    </div>
-
-    <!-- Main Screen -->
-    <div class="bg-gradient-to-b from-indigo-950 to-black border-4 border-cyan-400 rounded-3xl p-8 neon-border">
-
-      <!-- 404 -->
-      <div class="text-center">
-        <h1 class="text-6xl md:text-9xl text-cyan-300 glow mb-6">
-          404
-        </h1>
-
-        <h2 class="text-pink-400 text-xl md:text-3xl mb-8 glow">
-          LEVEL NOT FOUND
-        </h2>
-
-        <div class="bg-slate-900 border border-cyan-400 rounded-2xl p-6 max-w-3xl mx-auto">
-          <p class="text-cyan-100 text-xs md:text-sm leading-8">
-            Oops! The page you are looking for
-            seems to have respawned somewhere else.
-          </p>
-
-          <p class="text-cyan-400 mt-6 text-xs md:text-sm">
-            Let’s get you back to base.
-          </p>
+    <!-- HEADER / NAVIGATION – deep blue gradient -->
+    <header class="sticky top-0 z-30 bg-gradient-to-r from-blue-900 via-blue-800 to-blue-700 shadow-lg">
+        <div class="container mx-auto px-4 md:px-6 py-3 flex flex-wrap items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <img src="logo.jpg" alt="Polar Surveyors Ltd Logo" class="h-12 w-auto rounded-md shadow-sm border border-white/20 bg-white/10 p-1"
+                     onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2280%22 height=%2280%22%3E%3Crect width=%2280%22 height=%2280%22 fill=%22%230f2b46%22/%3E%3Ctext x=%2250%25%22 y=%2255%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2216%22 font-family=%22sans-serif%22%3EPolar%3C/text%3E%3C/svg%3E';">
+                <div class="text-white">
+                    <h1 class="text-xl md:text-2xl font-bold tracking-tight">POLAR SURVEYORS LTD</h1>
+                    <p class="text-xs text-blue-200 hidden sm:block">Precision • Integrity • Excellence</p>
+                </div>
+            </div>
+            <nav class="hidden md:flex space-x-6 text-white font-medium">
+                <a href="#home" class="hover:text-blue-200 transition duration-200">Home</a>
+                <a href="#services" class="hover:text-blue-200 transition duration-200">Services</a>
+                <a href="#about" class="hover:text-blue-200 transition duration-200">About</a>
+                <a href="#contact" class="hover:text-blue-200 transition duration-200">Contact</a>
+            </nav>
+            <div class="md:hidden">
+                <button id="mobile-menu-btn" class="text-white focus:outline-none text-2xl">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
         </div>
-
-        <!-- Button -->
-        <a href="/"
-          class="inline-block mt-10 px-8 py-5 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-xl text-white transition duration-300 btn-glow">
-          RETURN TO HOME BASE
-        </a>
-      </div>
-
-      <!-- Bottom Panels -->
-      <div class="grid md:grid-cols-3 gap-6 mt-12">
-
-        <!-- Menu -->
-        <div class="border border-cyan-400 rounded-2xl p-5 bg-slate-950">
-          <h3 class="text-cyan-400 mb-4 text-sm">
-            QUEST MENU
-          </h3>
-
-          <ul class="space-y-4 text-xs text-cyan-100">
-            <li>> Home</li>
-            <li>> Services</li>
-            <li>> About Us</li>
-            <li>> Contact</li>
-          </ul>
+        <div id="mobile-menu" class="hidden md:hidden bg-blue-800/95 backdrop-blur-sm px-4 pb-4 flex flex-col space-y-3 text-white font-medium">
+            <a href="#home" class="hover:text-blue-200 py-1 transition">Home</a>
+            <a href="#services" class="hover:text-blue-200 py-1 transition">Services</a>
+            <a href="#about" class="hover:text-blue-200 py-1 transition">About</a>
+            <a href="#contact" class="hover:text-blue-200 py-1 transition">Contact</a>
         </div>
+    </header>
 
-        <!-- Status -->
-        <div class="border border-purple-500 rounded-2xl p-5 bg-slate-950">
-          <h3 class="text-pink-400 mb-4 text-sm">
-            STATUS
-          </h3>
-
-          <div class="space-y-4 text-xs">
-            <p class="text-green-400">
-              ❤ ❤ ❤ ❤ ❤
-            </p>
-
-            <p class="text-cyan-200">
-              SCORE: 40400
-            </p>
-
-            <p class="text-pink-400">
-              HIGH SCORE: 2026
-            </p>
-          </div>
+    <!-- HERO SECTION – dynamic image slider (Kenyan scenery) -->
+    <section id="home" class="relative hero-slider-container w-full h-[85vh] md:h-[90vh] lg:h-[85vh] min-h-[550px]">
+        <div class="absolute inset-0 w-full h-full overflow-hidden">
+            <img id="heroImg1" class="hero-img" alt="Kenyan Landscape" src="">
+            <img id="heroImg2" class="hero-img" alt="Kenyan Scenery" src="">
         </div>
-
-        <!-- Tips -->
-        <div class="border border-cyan-400 rounded-2xl p-5 bg-slate-950">
-          <h3 class="text-yellow-300 mb-4 text-sm">
-            TIPS
-          </h3>
-
-          <p class="text-xs text-cyan-100 leading-7">
-            Check the URL or try exploring
-            other sections.
-          </p>
+        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent z-10"></div>
+        <div class="relative z-20 flex flex-col items-center justify-center h-full text-center text-white px-6 max-w-5xl mx-auto">
+            <span class="bg-blue-600/80 text-white text-sm font-semibold px-4 py-1 rounded-full backdrop-blur-sm mb-4 inline-block">Kenya's Trusted Survey Partner</span>
+            <h2 class="text-4xl md:text-6xl lg:text-7xl font-extrabold drop-shadow-2xl tracking-tight">Mapping Your Future<br> <span class="text-blue-300">with Precision</span></h2>
+            <p class="text-lg md:text-xl mt-6 max-w-2xl text-gray-100 drop-shadow-md">Subdivision • Rebeaconing • Titles Processing • Land Searches & Dealings</p>
+            <div class="mt-8 flex flex-wrap gap-4 justify-center">
+                <a href="#contact" class="bg-amber-600 hover:bg-amber-500 transition-all text-white px-8 py-3 rounded-full font-bold shadow-lg transform hover:scale-105">Get Consultation</a>
+                <a href="#services" class="bg-white/20 backdrop-blur-sm hover:bg-white/30 border border-white/40 text-white px-8 py-3 rounded-full font-semibold transition">Our Services</a>
+            </div>
         </div>
+    </section>
 
-      </div>
-    </div>
+    <!-- SERVICES SECTION – blue-accented cards -->
+    <section id="services" class="py-20 px-4 md:px-8 bg-white">
+        <div class="container mx-auto">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-blue-700 font-semibold tracking-wide uppercase bg-blue-100 px-4 py-1 rounded-full text-sm">Core Expertise</span>
+                <h2 class="text-3xl md:text-5xl font-bold mt-4 text-gray-800">Comprehensive Land Solutions</h2>
+                <div class="w-24 h-1 bg-blue-500 mx-auto mt-6 rounded-full"></div>
+                <p class="text-gray-600 mt-6 text-lg">Delivering accurate surveying and land consultancy services across Kenya with modern technology & certified expertise.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="service-card bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
+                    <div class="h-2 bg-blue-700 w-full"></div>
+                    <div class="p-6 text-center">
+                        <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-5">
+                            <i class="fas fa-draw-polygon text-3xl text-blue-700"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-3">Subdivision Services</h3>
+                        <p class="text-gray-600">Professional land subdivision into plots, survey plans, mutation mapping, and compliance with Kenyan physical planning regulations.</p>
+                    </div>
+                </div>
+                <div class="service-card bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
+                    <div class="h-2 bg-blue-500 w-full"></div>
+                    <div class="p-6 text-center">
+                        <div class="bg-blue-50 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-5">
+                            <i class="fas fa-map-marked-alt text-3xl text-blue-600"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-3">Rebeaconing</h3>
+                        <p class="text-gray-600">Re-establishment of lost or damaged boundary beacons using GPS and traditional methods to restore original land dimensions.</p>
+                    </div>
+                </div>
+                <div class="service-card bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
+                    <div class="h-2 bg-blue-700 w-full"></div>
+                    <div class="p-6 text-center">
+                        <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-5">
+                            <i class="fas fa-file-alt text-3xl text-blue-700"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-3">Titles Processing</h3>
+                        <p class="text-gray-600">End-to-end title deed processing, land registration, transfer of ownership, and compliance with lands registry procedures.</p>
+                    </div>
+                </div>
+                <div class="service-card bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
+                    <div class="h-2 bg-blue-500 w-full"></div>
+                    <div class="p-6 text-center">
+                        <div class="bg-blue-50 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-5">
+                            <i class="fas fa-search-location text-3xl text-blue-600"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-3">Land Searches & Dealings</h3>
+                        <p class="text-gray-600">Official land registry searches, due diligence, lease agreements, land rent clearance, and all land transaction advisory.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    <!-- Footer -->
-    <div class="mt-10 flex flex-col md:flex-row justify-between items-center gap-6">
+    <!-- ABOUT SECTION – updated to reflect new office location -->
+    <section id="about" class="py-20 bg-gradient-to-br from-gray-50 to-blue-50/40">
+        <div class="container mx-auto px-4 md:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="order-2 lg:order-1">
+                    <span class="text-blue-700 font-semibold text-sm uppercase bg-white/60 px-3 py-1 rounded-full">Our Legacy</span>
+                    <h2 class="text-3xl md:text-4xl font-bold mt-3 text-gray-800">Polar Surveyors Ltd – <span class="text-blue-700">Rooted in Kenya, Driven by Precision</span></h2>
+                    <div class="w-20 h-1 bg-blue-600 my-5 rounded-full"></div>
+                    <p class="text-gray-700 mb-5 leading-relaxed">With decades of combined surveying experience, we deliver unmatched accuracy in land subdivision, beacon restoration and title processing. Our head office is strategically located in Kitengela at <strong class="text-blue-800">Gifan Enterprises, 1st floor, office A8</strong>, serving individuals, developers, and institutions across Kenya.</p>
+                    <p class="text-gray-700 mb-6">We utilize modern survey equipment, drone mapping, and rigorous regulatory compliance to ensure your land dealings are seamless and legally sound. Trust Polar for transparent, ethical and professional surveying services.</p>
+                    <div class="flex flex-wrap gap-4">
+                        <div class="flex items-center gap-2"><i class="fas fa-check-circle text-blue-600"></i><span>Certified Surveyors</span></div>
+                        <div class="flex items-center gap-2"><i class="fas fa-check-circle text-blue-600"></i><span>24/7 Client Support</span></div>
+                        <div class="flex items-center gap-2"><i class="fas fa-check-circle text-blue-600"></i><span>Nationwide Coverage</span></div>
+                    </div>
+                </div>
+                <div class="order-1 lg:order-2 grid grid-cols-2 gap-4">
+                    <img src="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=500&auto=format" alt="Maasai Mara sunset" class="rounded-2xl shadow-xl w-full h-48 object-cover transition hover:scale-105 duration-500">
+                    <img src="https://images.unsplash.com/photo-1589301760014-2c9b6b6a3d87?w=500&auto=format" alt="Mount Kenya Landscape" class="rounded-2xl shadow-xl w-full h-48 object-cover transition hover:scale-105 duration-500 mt-6">
+                    <img src="https://images.unsplash.com/photo-1523805009345-7448845a9e53?w=500&auto=format" alt="Tea Plantations Kericho" class="rounded-2xl shadow-xl w-full h-48 object-cover transition hover:scale-105 duration-500 -mt-6">
+                    <img src="https://images.unsplash.com/photo-1608744882201-0e69b4c7dbd3?w=500&auto=format" alt="Nairobi Skyline" class="rounded-2xl shadow-xl w-full h-48 object-cover transition hover:scale-105 duration-500">
+                </div>
+            </div>
+        </div>
+    </section>
 
-      <div>
-        <h2 class="text-green-400 text-lg glow">
-          NEED HELP?
-        </h2>
+    <!-- CONTACT SECTION – all details replaced with new email, phone & Gifan Enterprises location -->
+    <section id="contact" class="py-20 bg-gray-900 text-white relative">
+        <div class="absolute inset-0 opacity-10 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=1600');"></div>
+        <div class="container mx-auto px-4 md:px-8 relative z-10">
+            <div class="text-center max-w-2xl mx-auto mb-14">
+                <h2 class="text-3xl md:text-5xl font-bold">Let's Work Together</h2>
+                <div class="w-24 h-1 bg-blue-400 mx-auto mt-4 mb-6 rounded-full"></div>
+                <p class="text-gray-300 text-lg">Visit our centrally located office or reach out — we're ready to assist with precision and integrity.</p>
+            </div>
 
-        <p class="text-slate-300 text-xs mt-4">
-          We’re just a call away!
-        </p>
+            <!-- Two column main contact area with interactive map (updated) -->
+            <div class="grid md:grid-cols-2 gap-8 items-stretch">
+                <!-- LEFT COLUMN: New Location Details + Embedded Map for Gifan Enterprises -->
+                <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 md:p-8 border border-white/20 flex flex-col">
+                    <div class="flex items-center gap-3 mb-5">
+                        <i class="fas fa-map-marker-alt text-blue-300 text-2xl"></i>
+                        <h3 class="text-2xl font-semibold">Visit Our Office</h3>
+                    </div>
+                    <div class="space-y-3 mb-5">
+                        <p class="text-gray-100 flex items-start gap-3"><i class="fas fa-building mt-1 text-blue-300 w-5"></i> <span><strong class="font-semibold">Kitengela — Gifan Enterprises</strong><br> 1st floor, office A8 <br> Kitengela Town, Kenya</span></p>
+                        <p class="text-gray-200 flex items-center gap-3"><i class="fas fa-phone-alt text-blue-300 w-5"></i> <a href="tel:+254712713153" class="hover:text-blue-300 transition">+254 712 713 153</a> (Call & WhatsApp)</p>
+                        <p class="text-gray-200 flex items-center gap-3"><i class="fas fa-envelope text-blue-300 w-5"></i> <a href="mailto:polarsurveyorsltd@gmail.com" class="hover:text-blue-300 break-all">polarsurveyorsltd@gmail.com</a></p>
+                        <p class="text-gray-200 flex items-start gap-3"><i class="far fa-clock text-blue-300 w-5 mt-1"></i> <span>Mon-Fri: 8:00 AM - 5:00 PM<br>Sat: 9:00 AM - 1:00 PM</span></p>
+                    </div>
+                    <!-- Interactive Google Map Embed - pinpointing Gifan Enterprises, Kitengela -->
+                    <div class="mt-2 mb-5">
+                        <iframe class="map-iframe w-full h-56 md:h-64 border-0 shadow-xl" loading="lazy" allowfullscreen 
+                                src="https://www.google.com/maps?q=Gifan+Enterprises+Kitengela&output=embed"
+                                referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+                    <div class="flex flex-wrap gap-3 mt-1">
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=Gifan+Enterprises+Kitengela" target="_blank" class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-500 transition px-5 py-2.5 rounded-full font-medium text-sm shadow-md btn-glow"><i class="fas fa-directions"></i> Get Directions (Live)</a>
+                        <button onclick="navigator.clipboard?.writeText('Gifan Enterprises, 1st floor, office A8, Kitengela, Kenya')" class="inline-flex items-center gap-2 bg-white/20 hover:bg-white/30 transition px-5 py-2.5 rounded-full text-sm"><i class="fas fa-copy"></i> Copy Address</button>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-white/20 text-xs text-blue-200 flex items-center gap-2"><i class="fas fa-check-circle"></i> Ample client parking | Easy access from Namanga Road</div>
+                </div>
 
-        <p class="text-2xl text-green-400 mt-4 glow">
-          0717626780
-        </p>
-      </div>
+                <!-- RIGHT COLUMN: updated communication tools with new number and email -->
+                <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 md:p-8 border border-white/20 flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-2xl font-semibold mb-5 flex items-center gap-2"><i class="fab fa-whatsapp text-green-400"></i> Connect Instantly</h3>
+                        <p class="text-gray-200 mb-6">Reach our survey team directly via call, email or WhatsApp. We respond within 2 business hours.</p>
+                        
+                        <!-- action buttons rapid contact with UPDATED phone and whatsapp -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+                            <a href="tel:+254712713153" class="flex items-center justify-center gap-3 bg-blue-700/60 hover:bg-blue-600 transition p-3 rounded-xl font-medium border border-blue-400/40"><i class="fas fa-phone-alt text-xl"></i> Call Now</a>
+                            <a href="https://wa.me/254712713153?text=Hello%20Polar%20Surveyors%2C%20I%20need%20assistance%20with%20land%20surveying%2Ftitle%20services." target="_blank" class="flex items-center justify-center gap-3 bg-green-700/60 hover:bg-green-600 transition p-3 rounded-xl font-medium border border-green-400/40"><i class="fab fa-whatsapp text-xl"></i> WhatsApp Chat</a>
+                            <a href="mailto:polarsurveyorsltd@gmail.com?subject=Survey%20Inquiry%20from%20Website&body=Hello%2C%20I%20would%20like%20to%20get%20more%20information%20about..." class="flex items-center justify-center gap-3 bg-gray-700/60 hover:bg-gray-600 transition p-3 rounded-xl font-medium"><i class="fas fa-envelope"></i> Email Us</a>
+                            <a href="#contact" onclick="document.getElementById('contactFormArea')?.scrollIntoView({behavior:'smooth'}); return false;" class="flex items-center justify-center gap-3 bg-amber-600/80 hover:bg-amber-500 transition p-3 rounded-xl font-medium"><i class="fas fa-calendar-alt"></i> Request Callback</a>
+                        </div>
+                        <!-- Social Presence / professional networks -->
+                        <div class="border-t border-white/20 pt-5">
+                            <p class="text-sm text-gray-300 mb-3"><i class="fas fa-share-alt mr-2"></i> Follow our updates & land insights</p>
+                            <div class="flex flex-wrap gap-4">
+                                <a href="https://facebook.com" target="_blank" class="bg-white/20 hover:bg-blue-500 transition-all p-3 rounded-full text-xl w-12 h-12 flex items-center justify-center"><i class="fab fa-facebook-f"></i></a>
+                                <a href="https://twitter.com" target="_blank" class="bg-white/20 hover:bg-blue-500 transition-all p-3 rounded-full text-xl w-12 h-12 flex items-center justify-center"><i class="fab fa-twitter"></i></a>
+                                <a href="https://instagram.com" target="_blank" class="bg-white/20 hover:bg-pink-500 transition-all p-3 rounded-full text-xl w-12 h-12 flex items-center justify-center"><i class="fab fa-instagram"></i></a>
+                                <a href="https://linkedin.com" target="_blank" class="bg-white/20 hover:bg-blue-700 transition-all p-3 rounded-full text-xl w-12 h-12 flex items-center justify-center"><i class="fab fa-linkedin-in"></i></a>
+                            </div>
+                            <div class="mt-5 bg-blue-800/40 rounded-xl p-3 text-center text-sm">
+                                <i class="fas fa-tachometer-alt mr-1 text-blue-200"></i> Quick survey request? <strong>Call/WhatsApp +254712713153</strong> for free initial quote.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- additional quick callback form - keeps same but reflects new contact details -->
+            <div id="contactFormArea" class="max-w-2xl mx-auto mt-12 bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
+                <div class="text-center mb-4">
+                    <i class="fas fa-pen-alt text-blue-300 text-xl"></i>
+                    <h4 class="text-xl font-semibold mt-1">Request a callback or consultation</h4>
+                    <p class="text-gray-300 text-sm">Leave your details and our land survey expert will reach out within 24h.</p>
+                </div>
+                <form action="https://formspree.io/f/xeqygqjg" method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <input type="text" name="name" placeholder="Full name" required class="bg-white/20 border border-white/30 rounded-xl px-4 py-3 text-white placeholder:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                    <input type="tel" name="phone" placeholder="Phone number" required class="bg-white/20 border border-white/30 rounded-xl px-4 py-3 text-white placeholder:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                    <input type="email" name="email" placeholder="Email address" class="bg-white/20 border border-white/30 rounded-xl px-4 py-3 text-white placeholder:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 md:col-span-2">
+                    <textarea name="message" rows="2" placeholder="Tell us about your land/survey need (subdivision, title, beacon, etc.)" class="bg-white/20 border border-white/30 rounded-xl px-4 py-3 text-white placeholder:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 md:col-span-2"></textarea>
+                    <button type="submit" class="md:col-span-2 bg-blue-600 hover:bg-blue-500 transition font-bold py-3 rounded-xl text-white shadow-md flex items-center justify-center gap-2"><i class="fas fa-paper-plane"></i> Send Request</button>
+                    <p class="text-xs text-gray-400 text-center md:col-span-2">We respect your privacy. Your details are secure.</p>
+                </form>
+            </div>
+        </div>
+    </section>
 
-      <div class="text-center">
-        <h2 class="text-cyan-400 text-lg glow">
-          ROBOTECH DIGITAL SOLUTION
-        </h2>
+    <!-- FOOTER fully updated with new location & contact details -->
+    <footer class="bg-gray-950 text-gray-400 py-8 border-t border-gray-800">
+        <div class="container mx-auto px-4 text-center">
+            <div class="flex flex-wrap justify-center gap-6 mb-4">
+                <a href="#home" class="hover:text-blue-400 text-sm">Home</a>
+                <a href="#services" class="hover:text-blue-400 text-sm">Services</a>
+                <a href="#about" class="hover:text-blue-400 text-sm">About</a>
+                <a href="#contact" class="hover:text-blue-400 text-sm">Contact</a>
+            </div>
+            <p class="text-sm">© <span id="year"></span> Polar Surveyors Ltd — Precision Land Surveying & Title Specialists. All rights reserved.</p>
+            <p class="text-xs mt-2 flex flex-wrap justify-center gap-x-4 gap-y-1"><i class="fas fa-map-marker-alt text-blue-400 mr-1"></i> Gifan Enterprises, 1st floor, office A8, Kitengela | <i class="fas fa-phone-alt"></i> +254712713153 | <i class="fas fa-envelope"></i> polarsurveyorsltd@gmail.com</p>
+            <p class="text-[11px] mt-3 text-gray-500">📍 Visits by appointment also welcome — Gifan Enterprises, along Namanga Road, opposite Kitengela Plaza</p>
+        </div>
+    </footer>
 
-        <p class="text-slate-400 text-xs mt-3">
-          Building Digital Excellence
-        </p>
-      </div>
+    <!-- SCRIPTS: Slider + Year + Service card animation -->
+    <script>
+        // Kenyan environment images (Unsplash – high quality)
+        const kenyanImages = [
+            "https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=1600&auto=format",
+            "https://images.unsplash.com/photo-1589301760014-2c9b6b6a3d87?w=1600&auto=format",
+            "https://images.unsplash.com/photo-1523805009345-7448845a9e53?w=1600&auto=format",
+            "https://images.unsplash.com/photo-1608744882201-0e69b4c7dbd3?w=1600&auto=format",
+            "https://images.unsplash.com/photo-1527479664048-2c4410ff7a42?w=1600&auto=format",
+            "https://images.unsplash.com/photo-1547471080-7cb2f6a96afc?w=1600&auto=format",
+            "https://images.unsplash.com/photo-1587560699334-bea93391dcef?w=1600&auto=format"
+        ];
 
-    </div>
+        kenyanImages.forEach(url => { const img = new Image(); img.src = url; });
 
-  </div>
+        let currentImgIndex = 0;
+        let activeImageElem = document.getElementById('heroImg1');
+        let inactiveImageElem = document.getElementById('heroImg2');
+        let intervalId = null;
+        let isTransitioning = false;
 
+        function getRandomDifferentImage(currentIdx) {
+            let newIdx = Math.floor(Math.random() * kenyanImages.length);
+            while (newIdx === currentIdx && kenyanImages.length > 1) {
+                newIdx = Math.floor(Math.random() * kenyanImages.length);
+            }
+            return { index: newIdx, url: kenyanImages[newIdx] };
+        }
+
+        function initSlider() {
+            let idx1 = Math.floor(Math.random() * kenyanImages.length);
+            let idx2 = idx1;
+            while (idx2 === idx1 && kenyanImages.length > 1) {
+                idx2 = Math.floor(Math.random() * kenyanImages.length);
+            }
+            activeImageElem.src = kenyanImages[idx1];
+            inactiveImageElem.src = kenyanImages[idx2];
+            activeImageElem.classList.add('active');
+            inactiveImageElem.classList.remove('active');
+            inactiveImageElem.style.opacity = '0';
+            activeImageElem.style.opacity = '1';
+            currentImgIndex = idx1;
+        }
+
+        function shuffleAndTransition() {
+            if (isTransitioning) return;
+            isTransitioning = true;
+            const randomImg = getRandomDifferentImage(currentImgIndex);
+            const nextUrl = randomImg.url;
+            const nextIndex = randomImg.index;
+            inactiveImageElem.src = nextUrl;
+            inactiveImageElem.onload = () => {
+                activeImageElem.classList.remove('active');
+                inactiveImageElem.classList.add('active');
+                let temp = activeImageElem;
+                activeImageElem = inactiveImageElem;
+                inactiveImageElem = temp;
+                currentImgIndex = nextIndex;
+                setTimeout(() => { isTransitioning = false; }, 1200);
+            };
+            if (inactiveImageElem.complete) inactiveImageElem.onload();
+        }
+
+        function startAutoShuffle() {
+            if (intervalId) clearInterval(intervalId);
+            intervalId = setInterval(shuffleAndTransition, 4800);
+        }
+
+        initSlider();
+        startAutoShuffle();
+
+        // Mobile menu toggle
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        if (mobileBtn) {
+            mobileBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+        }
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+        });
+
+        // Set current year
+        document.getElementById('year').innerText = new Date().getFullYear();
+
+        // Service cards reveal animation
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = "1";
+                    entry.target.style.transform = "translateY(0)";
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.2 });
+        document.querySelectorAll('.service-card').forEach(card => {
+            card.style.opacity = "0";
+            card.style.transform = "translateY(30px)";
+            card.style.transition = "opacity 0.7s ease, transform 0.7s ease";
+            observer.observe(card);
+        });
+    </script>
 </body>
 </html>
